@@ -1,5 +1,9 @@
 package za.ac.cput.views;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,15 +29,26 @@ public class Client {
             connection.setRequestProperty("Authorization", "Basic " + encoding);
             InputStream content = connection.getInputStream();
             BufferedReader in = new BufferedReader(new InputStreamReader(content));
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String line;
             while ((line = in.readLine()) != null) {
                 /*System.out.println(line);*/
                 list.add(line);
+              /*  String jsonOutput = gson.toJson(line);
+                list.add(jsonOutput + " Hello ");*/
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(list);
         return list;
+
     }
+
+    public static void main(String[] args) {
+        getAllHospitalRooms();
+    }
+
 
 }
