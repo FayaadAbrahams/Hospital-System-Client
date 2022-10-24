@@ -13,6 +13,7 @@ public class User extends JFrame {
     private static JScrollPane sp;
     private static JLabel entityLabel;
     private static JComboBox<? extends String> comboBox;
+    private static Client client;
 
     public void setGUI() {
         userFrame = new JFrame("Hospital Management - Client");
@@ -54,7 +55,10 @@ public class User extends JFrame {
                             System.out.println();
                             break;
                         case "Hospital Rooms":
-                            System.out.println();
+                            System.out.println(Client.getAllHospitalRooms());
+                            for(String a: Client.getAllHospitalRooms()){
+                                userArea.append(a + "\n");
+                            }
                             break;
                         case "Invoices":
                             System.out.println();
