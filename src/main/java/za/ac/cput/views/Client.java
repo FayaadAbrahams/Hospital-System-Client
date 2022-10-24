@@ -13,6 +13,7 @@ import java.util.List;
 public class Client {
     public static List<String> list = new ArrayList<>();
 
+    // Fetch all items from Hospital Room and Return in a String
     public static List<String> getAllHospitalRooms() {
         try {
             URL url = new URL("http://localhost:8080/hospital-system/hospitalroom/find-all");
