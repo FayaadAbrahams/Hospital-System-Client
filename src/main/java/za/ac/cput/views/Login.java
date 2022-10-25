@@ -4,10 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 /*
     Login.java
     GUI for Login
-    Author: Sinenhlanhla Zondi (220008922) and Fayaad Abrahams (218221630)
+    Author: Fayaad Abrahams (218221630)
     Date: 24 October 2022
 */
 public class Login implements ActionListener {
@@ -26,6 +27,10 @@ public class Login implements ActionListener {
     private static User user;
 
     public static void main(String[] args) {
+        new Login().setGUI();
+    }
+
+    public void setGUI() {
         frame = new JFrame("Hospital Management");
         panel = new JPanel();
 
@@ -80,6 +85,9 @@ public class Login implements ActionListener {
         if (userName.equals("admin") && password.equals("advPass")) {
             result.setText("Logged in Successfully!");
             result.setForeground(new Color(24, 161, 95));
+            frame.dispose();
+            adminMain main = new adminMain();
+            main.showGUI();
         } else if (userName.equals("client") && password.equals("password")) {
             result.setText("Logged in Successfully!");
             result.setForeground(new Color(24, 161, 95));
