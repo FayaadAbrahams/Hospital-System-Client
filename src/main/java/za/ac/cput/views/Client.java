@@ -190,5 +190,33 @@ public class Client {
         return getPrettyString(line);
     }
 
+    // Fetch all items from Doctors and Return in a String
+    public static String getDoctors() throws IOException {
+        try {
+            URL url = new URL("http://localhost:8080/hospital-system/doctor/find-all");
+            content = Client.connectionGET(url).getInputStream();
+            in = new BufferedReader(new InputStreamReader(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(getPrettyString(line));
+        //Returns the final readable JSON Array
+        return getPrettyString(line);
+    }
+
+    // Fetch all items from Secretaries and Return in a String
+    public static String getSecretaries() throws IOException {
+        try {
+            URL url = new URL("http://localhost:8080/hospital-system/secretary/find-all");
+            content = Client.connectionGET(url).getInputStream();
+            in = new BufferedReader(new InputStreamReader(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(getPrettyString(line));
+        //Returns the final readable JSON Array
+        return getPrettyString(line);
+    }
+
 
 }

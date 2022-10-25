@@ -2,15 +2,18 @@ package za.ac.cput.views;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.io.IOException;
 import java.util.Objects;
 
-public class User extends JFrame {
+public class User extends JFrame implements ActionListener {
     private static final String[] entities = {" ", "Appointments", "Cleaning Staff", "Doctors", "Drivers", "Hospital Rooms", "Invoices", "Medical Aid", "Medicine", "Nurses", "Patients", "Secretaries", "Suppliers"};
     private static JFrame userFrame;
     private static JPanel userPanel;
     private static JTextArea userArea;
+    private static JButton backButton;
     private static JScrollPane sp;
     private static JLabel entityLabel;
     private static JComboBox<? extends String> comboBox;
@@ -58,7 +61,11 @@ public class User extends JFrame {
                         }
                         break;
                     case "Doctors":
-                        System.out.println();
+                        try {
+                            userArea.append(Client.getDoctors());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         break;
                     case "Drivers":
                         try {
@@ -111,7 +118,11 @@ public class User extends JFrame {
                         }
                         break;
                     case "Secretaries":
-                        System.out.println();
+                        try {
+                            userArea.append(Client.getSecretaries());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         break;
                     case "Suppliers":
                         try {
@@ -133,11 +144,24 @@ public class User extends JFrame {
         sp.getViewport().add(userArea);
         /* userArea.add(sp);*/
 
+        backButton = new JButton("Back");
+        backButton.setForeground(Color.WHITE);
+        backButton.setBackground(Color.RED);
+        backButton.setBounds(170, 530, 80, 25);
+        backButton.addActionListener(new User());
+
         userPanel.add(entityLabel);
+        userPanel.add(backButton);
         userPanel.add(comboBox);
         userPanel.add(sp);
         userFrame.setVisible(true);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        userFrame.dispose();
+        Login login = new Login();
+        login.setGUI();
+    }
 }
 
