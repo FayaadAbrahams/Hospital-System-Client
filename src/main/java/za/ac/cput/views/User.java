@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 
 public class User extends JFrame {
     private static final String[] entities = {" ", "Appointments", "Cleaning Staff", "Doctors", "Drivers", "Hospital Rooms", "Invoices", "Medical Aid", "Medicine", "Nurses", "Patients", "Secretaries", "Suppliers"};
@@ -13,13 +14,12 @@ public class User extends JFrame {
     private static JScrollPane sp;
     private static JLabel entityLabel;
     private static JComboBox<? extends String> comboBox;
-    private static Client client;
 
     public void setGUI() {
         userFrame = new JFrame("Hospital Management - Client");
         userPanel = new JPanel();
 
-        userFrame.setSize(450, 500);
+        userFrame.setSize(450, 670);
         userFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         userFrame.setLocationRelativeTo(null);
 
@@ -43,21 +43,35 @@ public class User extends JFrame {
                     userArea.setText(comboSelect);
                     switch (comboSelect) {
                         case "Appointment":
-                            System.out.println();
+                            try {
+                                userArea.append(Client.getAllAppointments());
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                             break;
                         case "Cleaning Staff":
-                            System.out.println();
+                            try {
+                                userArea.append(Client.getAllCleaningStaff());
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                             break;
                         case "Doctors":
                             System.out.println();
                             break;
                         case "Drivers":
+                            try {
+                                userArea.append(Client.getAllDrivers());
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                             System.out.println();
                             break;
                         case "Hospital Rooms":
-                            System.out.println(Client.getAllHospitalRooms());
-                            for(String a: Client.getAllHospitalRooms()){
-                                userArea.append(a + "\n");
+                            try {
+                                userArea.append(Client.getAllHospitalRooms());
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
                             }
                             break;
                         case "Invoices":
@@ -87,12 +101,17 @@ public class User extends JFrame {
         });
         userArea = new JTextArea("================ Please Select an Item from the Drop down ================");
         userArea.setEditable(false);
-        userArea.setBounds(20, 120, 390, 300);
-        sp = new JScrollPane(userArea);
+        userArea.setBounds(20, 120, 390, 500);
+        sp = new JScrollPane();
+        sp.setBounds(20, 120, 390, 500);
+        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        sp.getViewport().setBackground(Color.WHITE);
+        sp.getViewport().add(userArea);
+       /* userArea.add(sp);*/
 
         userPanel.add(entityLabel);
         userPanel.add(comboBox);
-        userPanel.add(userArea);
+        userPanel.add(sp);
         userFrame.setVisible(true);
     }
 
