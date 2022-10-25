@@ -162,5 +162,33 @@ public class Client {
         return getPrettyString(line);
     }
 
+    // Fetch all items from Medicines and Return in a String
+    public static String getMedicines() throws IOException {
+        try {
+            URL url = new URL("http://localhost:8080/hospital-system/medicine/find-all");
+            content = Client.connectionGET(url).getInputStream();
+            in = new BufferedReader(new InputStreamReader(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(getPrettyString(line));
+        //Returns the final readable JSON Array
+        return getPrettyString(line);
+    }
+
+    // Fetch all items from Patients and Return in a String
+    public static String getPatients() throws IOException {
+        try {
+            URL url = new URL("http://localhost:8080/hospital-system/patient/find-all");
+            content = Client.connectionGET(url).getInputStream();
+            in = new BufferedReader(new InputStreamReader(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(getPrettyString(line));
+        //Returns the final readable JSON Array
+        return getPrettyString(line);
+    }
+
 
 }

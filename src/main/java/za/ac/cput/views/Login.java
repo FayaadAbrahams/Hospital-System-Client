@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 /*
     Login.java
     GUI for Login
-    Author: Sinenhlanhla Zondi (220008922)and Fayaad Abrahams (218221630)
+    Author: Sinenhlanhla Zondi (220008922) and Fayaad Abrahams (218221630)
     Date: 24 October 2022
 */
 public class Login implements ActionListener {

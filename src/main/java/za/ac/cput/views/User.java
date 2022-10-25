@@ -19,7 +19,7 @@ public class User extends JFrame {
         userFrame = new JFrame("Hospital Management - Client");
         userPanel = new JPanel();
 
-        userFrame.setSize(450, 640);
+        userFrame.setSize(450, 620);
         userFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         userFrame.setLocationRelativeTo(null);
 
@@ -90,7 +90,11 @@ public class User extends JFrame {
                         }
                         break;
                     case "Medicine":
-                        System.out.println();
+                        try {
+                            userArea.append(Client.getMedicines());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         break;
                     case "Nurses":
                         try {
@@ -100,7 +104,11 @@ public class User extends JFrame {
                         }
                         break;
                     case "Patients":
-                        System.out.println();
+                        try {
+                            userArea.append(Client.getPatients());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         break;
                     case "Secretaries":
                         System.out.println();
@@ -115,7 +123,7 @@ public class User extends JFrame {
                 }
             }
         });
-        userArea = new JTextArea("========== Please Select an Item from the Drop down ==========");
+        userArea = new JTextArea("========= Please Select an Item from the Drop down =========");
         userArea.setEditable(false);
         userArea.setBounds(20, 120, 390, 400);
         sp = new JScrollPane();
