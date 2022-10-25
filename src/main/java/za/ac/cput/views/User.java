@@ -3,8 +3,8 @@ package za.ac.cput.views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.util.Objects;
 
 public class User extends JFrame {
     private static final String[] entities = {" ", "Appointments", "Cleaning Staff", "Doctors", "Drivers", "Hospital Rooms", "Invoices", "Medical Aid", "Medicine", "Nurses", "Patients", "Secretaries", "Suppliers"};
@@ -35,71 +35,83 @@ public class User extends JFrame {
         comboBox = new JComboBox<>(entities);
         comboBox.setBounds(150, 50, 130, 25);
 
-        comboBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    String comboSelect = comboBox.getSelectedItem().toString();
-                    userArea.setText(comboSelect);
-                    switch (comboSelect) {
-                        case "Appointment":
-                            try {
-                                userArea.append(Client.getAllAppointments());
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            }
-                            break;
-                        case "Cleaning Staff":
-                            try {
-                                userArea.append(Client.getAllCleaningStaff());
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            }
-                            break;
-                        case "Doctors":
-                            System.out.println();
-                            break;
-                        case "Drivers":
-                            try {
-                                userArea.append(Client.getAllDrivers());
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            }
-                            System.out.println();
-                            break;
-                        case "Hospital Rooms":
-                            try {
-                                userArea.append(Client.getAllHospitalRooms());
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            }
-                            break;
-                        case "Invoices":
-                            System.out.println();
-                            break;
-                        case "Medical Aid":
-                            System.out.println();
-                            break;
-                        case "Medicine":
-                            System.out.println();
-                            break;
-                        case "Nurses":
-                            System.out.println();
-                            break;
-                        case "Patients":
-                            System.out.println();
-                            break;
-                        case "Secretaries":
-                            System.out.println();
-                            break;
-                        case "Suppliers":
-                            System.out.println();
-                            break;
-                    }
+        comboBox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                String comboSelect = Objects.requireNonNull(comboBox.getSelectedItem()).toString();
+                userArea.setText(comboSelect);
+                switch (comboSelect) {
+                    case " ":
+                        System.out.println("Nothing Selected");
+                        break;
+                    case "Appointments":
+                        try {
+                            userArea.append(Client.getAllAppointments());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        break;
+                    case "Cleaning Staff":
+                        try {
+                            userArea.append(Client.getAllCleaningStaff());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        break;
+                    case "Doctors":
+                        System.out.println();
+                        break;
+                    case "Drivers":
+                        try {
+                            userArea.append(Client.getAllDrivers());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        System.out.println();
+                        break;
+                    case "Hospital Rooms":
+                        try {
+                            userArea.append(Client.getAllHospitalRooms());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        break;
+                    case "Invoices":
+                        try {
+                            userArea.append(Client.getInvoices());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        break;
+                    case "Medical Aid":
+                        System.out.println();
+                        break;
+                    case "Medicine":
+                        System.out.println();
+                        break;
+                    case "Nurses":
+                        try {
+                            userArea.append(Client.getAllNurses());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        break;
+                    case "Patients":
+                        System.out.println();
+                        break;
+                    case "Secretaries":
+                        System.out.println();
+                        break;
+                    case "Suppliers":
+                        try {
+                            userArea.append(Client.getSuppliers());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        break;
                 }
             }
         });
-        userArea = new JTextArea("================ Please Select an Item from the Drop down ================");
+        userArea = new JTextArea("========== Please Select an Item from the Drop down ==========");
         userArea.setEditable(false);
         userArea.setBounds(20, 120, 390, 500);
         sp = new JScrollPane();
@@ -107,7 +119,7 @@ public class User extends JFrame {
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         sp.getViewport().setBackground(Color.WHITE);
         sp.getViewport().add(userArea);
-       /* userArea.add(sp);*/
+        /* userArea.add(sp);*/
 
         userPanel.add(entityLabel);
         userPanel.add(comboBox);

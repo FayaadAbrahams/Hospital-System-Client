@@ -17,9 +17,9 @@ import java.util.Base64;
 
 public class Client {
 
-    private static String prettyString = null;
     // String used to encode username and password to access secured content on URL.
     private static final String ENCODING = Base64.getEncoder().encodeToString(("client-user:1253208465b").getBytes(StandardCharsets.UTF_8));
+    private static String prettyString = null;
     private static InputStream content = null;
     private static BufferedReader in = null;
     private static String line;
@@ -46,6 +46,8 @@ public class Client {
         }
         return prettyString;
     }
+//================================================================================================================================================
+// Entity Methods
 
     // Fetch all items from Hospital Room and Return in a String
     public static String getAllHospitalRooms() throws IOException {
@@ -61,8 +63,6 @@ public class Client {
         return getPrettyString(line);
     }
 
-
-    //ISSUES HERE!!!
     // Fetch all items from Appointments and Return in a String
     public static String getAllAppointments() throws IOException {
         try {
@@ -74,10 +74,11 @@ public class Client {
         }
         System.out.println(getPrettyString(line));
         //Returns the final readable JSON Array
-        return  getPrettyString(line);
+        System.out.println(line);
+        return getPrettyString(line);
     }
 
-    // Fetch all items from Appointments and Return in a String
+    // Fetch all items from Drivers and Return in a String
     public static String getAllDrivers() throws IOException {
         try {
             URL url = new URL("http://localhost:8080/hospital-system/driver/get-all");
@@ -88,10 +89,10 @@ public class Client {
         }
         System.out.println(getPrettyString(line));
         //Returns the final readable JSON Array
-        return  getPrettyString(line);
+        return getPrettyString(line);
     }
 
-    // Fetch all items from Appointments and Return in a String
+    // Fetch all items from Cleaning Staff and Return in a String
     public static String getAllCleaningStaff() throws IOException {
         try {
             URL url = new URL("http://localhost:8080/hospital-system/cleaningStaff/find-all");
@@ -102,9 +103,50 @@ public class Client {
         }
         System.out.println(getPrettyString(line));
         //Returns the final readable JSON Array
-        return  getPrettyString(line);
+        return getPrettyString(line);
     }
 
+    // Fetch all items from Drivers and Return in a String
+    public static String getAllNurses() throws IOException {
+        try {
+            URL url = new URL("http://localhost:8080/hospital-system/nurse/find-all");
+            content = Client.connectionGET(url).getInputStream();
+            in = new BufferedReader(new InputStreamReader(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(getPrettyString(line));
+        //Returns the final readable JSON Array
+        return getPrettyString(line);
+    }
+
+    // Fetch all items from Suppliers and Return in a String
+    public static String getSuppliers() throws IOException {
+        try {
+            URL url = new URL("http://localhost:8080/hospital-system/supplier/find-all");
+            content = Client.connectionGET(url).getInputStream();
+            in = new BufferedReader(new InputStreamReader(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(getPrettyString(line));
+        //Returns the final readable JSON Array
+        return getPrettyString(line);
+    }
+
+    // Fetch all items from Invoices and Return in a String
+    public static String getInvoices() throws IOException {
+        try {
+            URL url = new URL("http://localhost:8080/hospital-system/invoice/find-all");
+            content = Client.connectionGET(url).getInputStream();
+            in = new BufferedReader(new InputStreamReader(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(getPrettyString(line));
+        //Returns the final readable JSON Array
+        return getPrettyString(line);
+    }
 
 
 }
