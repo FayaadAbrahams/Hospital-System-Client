@@ -148,5 +148,19 @@ public class Client {
         return getPrettyString(line);
     }
 
+    // Fetch all items from Invoices and Return in a String
+    public static String getMedicalAids() throws IOException {
+        try {
+            URL url = new URL("http://localhost:8080/hospital-system/medicalaid/find-all");
+            content = Client.connectionGET(url).getInputStream();
+            in = new BufferedReader(new InputStreamReader(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(getPrettyString(line));
+        //Returns the final readable JSON Array
+        return getPrettyString(line);
+    }
+
 
 }

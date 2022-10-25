@@ -19,7 +19,7 @@ public class User extends JFrame {
         userFrame = new JFrame("Hospital Management - Client");
         userPanel = new JPanel();
 
-        userFrame.setSize(450, 670);
+        userFrame.setSize(450, 640);
         userFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         userFrame.setLocationRelativeTo(null);
 
@@ -83,7 +83,11 @@ public class User extends JFrame {
                         }
                         break;
                     case "Medical Aid":
-                        System.out.println();
+                        try {
+                            userArea.append(Client.getMedicalAids());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         break;
                     case "Medicine":
                         System.out.println();
@@ -113,9 +117,9 @@ public class User extends JFrame {
         });
         userArea = new JTextArea("========== Please Select an Item from the Drop down ==========");
         userArea.setEditable(false);
-        userArea.setBounds(20, 120, 390, 500);
+        userArea.setBounds(20, 120, 390, 400);
         sp = new JScrollPane();
-        sp.setBounds(20, 120, 390, 500);
+        sp.setBounds(20, 120, 390, 400);
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         sp.getViewport().setBackground(Color.WHITE);
         sp.getViewport().add(userArea);
