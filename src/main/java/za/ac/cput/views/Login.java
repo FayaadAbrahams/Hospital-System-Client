@@ -7,26 +7,30 @@ import java.awt.event.ActionListener;
 /*
     Login.java
     GUI for Login
-    Author: Sinenhlanhla Zondi (220008922)and Fayaad Abrahams (218221630)
+    Author: Sinenhlanhla Zondi (220008922) and Fayaad Abrahams (218221630)
     Date: 24 October 2022
 */
 public class Login implements ActionListener {
     private static JFrame frame;
+    private static JPanel panel;
     private static JLabel userLabel;
     private static JTextField userText;
     private static JLabel passLabel;
     private static JPasswordField passwordField;
     private static JButton button;
     private static JLabel result;
+    private static Font f1;
+    private static Font f2;
+
 
     private static User user;
 
     public static void main(String[] args) {
         frame = new JFrame("Hospital Management");
-        JPanel panel = new JPanel();
+        panel = new JPanel();
 
-        Font f1 = new Font(Font.SANS_SERIF, Font.PLAIN, 17);
-        Font f2 = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
+        f1 = new Font(Font.SANS_SERIF, Font.PLAIN, 17);
+        f2 = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
 
         frame.setSize(310, 170);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
