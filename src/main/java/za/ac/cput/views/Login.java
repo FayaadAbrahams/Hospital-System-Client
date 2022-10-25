@@ -85,6 +85,9 @@ public class Login implements ActionListener {
         if (userName.equals("admin") && password.equals("advPass")) {
             result.setText("Logged in Successfully!");
             result.setForeground(new Color(24, 161, 95));
+            frame.dispose();
+            adminMain main = new adminMain();
+            main.showGUI();
         } else if (userName.equals("client") && password.equals("password")) {
             result.setText("Logged in Successfully!");
             result.setForeground(new Color(24, 161, 95));
