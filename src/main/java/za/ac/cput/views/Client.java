@@ -157,7 +157,6 @@ public class Client {
             dos.writeBytes(json.toString());
             dos.flush();
             dos.close();
-
             int responseCode = connectionPOST(url).getResponseCode();
             System.out.println("Response Code :" + responseCode);
 
