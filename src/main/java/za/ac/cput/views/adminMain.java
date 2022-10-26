@@ -1,6 +1,7 @@
 package za.ac.cput.views;
 
 import org.json.JSONObject;
+import za.ac.cput.util.StringHelper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -88,42 +89,33 @@ public class adminMain extends JFrame implements ActionListener {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 String comboSelect = Objects.requireNonNull(menuComboBox.getSelectedItem().toString());
                 switch (comboSelect) {
-                    case " " -> {
+                    case " ":
                         textArea.setText(" ");
                         textArea.setText("==================== Please Select an Entity ====================");
-                    }
-                    case "Nurse" -> { //Nurse
+                    break;
+                    case "Nurse"://Nurse
                         try {
                             textArea.setText(Client.getAllNurses());
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(new ActionListener() {
-
-                            public JSONObject prepJson(String str1, String str2, String str3) {
-                                JSONObject jObject = new JSONObject();
-                                jObject.put("nurseID", str1);
-                                jObject.put("nurseFirstName", str2);
-                                jObject.put("nurseLastName", str3);
-                                return jObject;
-                            }
-
                             @Override
-                            public void actionPerformed(ActionEvent ae) {
-                                String nurseId = "";
-                                String nurseFname = JOptionPane.showInputDialog("Please enter the nurse's first name");
-                                String nurseLname = JOptionPane.showInputDialog("Please enter the nurse's last name");
+                            public void actionPerformed(ActionEvent ae)
+                            {
+                                String id = StringHelper.generateUnqiueID();
+                                String fname = JOptionPane.showInputDialog("Please enter the nurse's first name");
+                                String lname = JOptionPane.showInputDialog("Please enter the nurse's last name");
 
-//                        String json = "{"+"nurseID"+":"+"'"+id+"'"+","
-//                            +"nurseFirstName"+":"+"'"+fname+"'"+","
-//                            +"nurseLastName"+":"+"'"+lname+"'"+"}";
-//                        System.out.println(json);
-
-                                JSONObject sendObj = prepJson(nurseId, nurseFname, nurseLname);
-                                String reqString = sendObj.toString();
-                                String url = "http://localhost:8080/hospital system/nurse";
-
-                                String response = HttpConnect.post(url, reqString);
+                                try
+                                {
+                                    Client.postNurse(id, fname, lname);
+                                    JOptionPane.showMessageDialog(null, "Nurse entered successfully");
+                                }
+                                catch(Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
                             }
                         });
                         readByIdButton.addActionListener(ae -> {
@@ -132,8 +124,9 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String nurseDeleteId = JOptionPane.showInputDialog("Please enter the ID of the nurse you would like to delete.");
                         });
-                    }
-                    case "Cleaning Staff" -> {
+                        break;
+
+                    case "Cleaning Staff":
                         try {
                             textArea.setText(Client.getAllCleaningStaff());
                         } catch (IOException ex) {
@@ -150,8 +143,9 @@ public class adminMain extends JFrame implements ActionListener {
                             String cleanStaffDeleteId = JOptionPane.showInputDialog("Please enter the ID of the staff member you would like to delete.");
                             String entity = "cleaningStaff";
                         });
-                    }
-                    case "Room" -> {
+                        break;
+
+                    case "Room":
                         try {
                             textArea.setText(Client.getAllHospitalRooms());
                         } catch (IOException ex) {
@@ -166,8 +160,9 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String roomFloorDeleteId = JOptionPane.showInputDialog("Please enter the ID of the room you would like to delete.");
                         });
-                    }
-                    case "Patient" -> {
+                        break;
+
+                    case "Patient":
                         try {
                             textArea.setText(Client.getPatients());
                         } catch (IOException ex) {
@@ -185,8 +180,9 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String patientIdDelete = JOptionPane.showInputDialog("Please enter the ID of the patient you would like to delete.");
                         });
-                    }
-                    case "Medical Aid" -> {
+                        break;
+
+                    case "Medical Aid":
                         try {
                             textArea.setText(Client.getMedicalAids());
                         } catch (IOException ex) {
@@ -202,17 +198,29 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String medicalAidIdDelete = JOptionPane.showInputDialog("Please enter the ID of the medical aid you would like to delete.");
                         });
-                    }
-                    case "Doctor" -> {
+                        break;
+
+                    case "Doctor":
                         try {
                             textArea.setText(Client.getDoctors());
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
+                            String id = StringHelper.generateUnqiueID();
                             String doctorFname = JOptionPane.showInputDialog("Please enter the doctor's first name.");
                             String doctorLname = JOptionPane.showInputDialog("Please enter the doctor's last name.");
                             String doctorCell = JOptionPane.showInputDialog("Please enter the doctor's cell number,");
+
+                            try
+                            {
+                                Client.postDoctor(id, doctorFname, doctorLname, doctorCell);
+                                JOptionPane.showMessageDialog(null, "Doctor entered successfully");
+                            }
+                            catch(Exception exception)
+                            {
+                                exception.printStackTrace();
+                            }
                         });
                         readByIdButton.addActionListener(ae -> {
                             String doctorIdRead = JOptionPane.showInputDialog("Please enter the ID of the doctor you're looking for.");
@@ -220,8 +228,9 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String doctorIdDelete = JOptionPane.showInputDialog("Please enter the ID of the doctor you would like to delete.");
                         });
-                    }
-                    case "Appointment" -> {
+                        break;
+
+                    case "Appointment":
                         try {
                             textArea.setText(Client.getAllAppointments());
                         } catch (IOException ex) {
@@ -238,8 +247,9 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String appointmentIdDelete = JOptionPane.showInputDialog("Please enter the id of the appointment.");
                         });
-                    }
-                    case "Secretary" -> {
+                        break;
+
+                    case "Secretary":
                         try {
                             textArea.setText(Client.getSecretaries());
                         } catch (IOException ex) {
@@ -255,8 +265,9 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String secretaryIdDelete = JOptionPane.showInputDialog("Please enter the id of the secretary you would like to delete.");
                         });
-                    }
-                    case "Invoice" -> {
+                        break;
+
+                    case "Invoice":
                         try {
                             textArea.setText(Client.getInvoices());
                         } catch (IOException ex) {
@@ -273,8 +284,9 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String invoiceNumDelete = JOptionPane.showInputDialog("Please enter the invoice number you would like to delete.");
                         });
-                    }
-                    case "Medicine" -> {
+                        break;
+
+                    case "Medicine":
                         try {
                             textArea.setText(Client.getMedicines());
                         } catch (IOException ex) {
@@ -290,8 +302,9 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String medicineNumDelete = JOptionPane.showInputDialog("Please enter the medicine ID you would like to delete.");
                         });
-                    }
-                    case "Driver" -> {
+                        break;
+
+                    case "Driver":
                         try {
                             textArea.setText(Client.getAllDrivers());
                         } catch (IOException ex) {
@@ -308,8 +321,9 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String driverIDDelete = JOptionPane.showInputDialog("Please enter the ID of the driver you would like to delete.");
                         });
-                    }
-                    case "Supplier" -> {
+                        break;
+
+                    case "Supplier":
                         try {
                             textArea.setText(Client.getSuppliers());
                         } catch (IOException ex) {
@@ -325,7 +339,7 @@ public class adminMain extends JFrame implements ActionListener {
                         deleteButton.addActionListener(ae -> {
                             String supplierIdDelete = JOptionPane.showInputDialog("Please enter the ID of the supplier you would like to delete.");
                         });
-                    }
+                        break;
                 }
             }
         });
