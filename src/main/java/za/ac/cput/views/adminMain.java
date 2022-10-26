@@ -11,9 +11,12 @@ import java.awt.event.ItemEvent;
 import java.io.IOException;
 import java.util.Objects;
 
-public class adminMain extends JFrame implements ActionListener {
+public class adminMain extends JFrame{
+    String entity = " ";
+    JTextField deleteText = new JTextField();
+
     JFrame frame = new JFrame("Administrator - Hospital Management");
-    JComboBox menuComboBox = new JComboBox();
+    JComboBox<? extends String> menuComboBox = new JComboBox<>();
     String[] departments = {" ", "Nurse", "Cleaning Staff", "Room", "Patient", "Medical Aid", "Doctor", "Appointment", "Secretary", "Invoice", "Medicine", "Driver", "Supplier"};
 
 
@@ -26,16 +29,14 @@ public class adminMain extends JFrame implements ActionListener {
     JLabel adminLabel = new JLabel("Admin Control");
 
     public void showGUI() {
-        for (String item : departments) {
-            menuComboBox.addItem(item);
-        }
+       menuComboBox = new JComboBox<>(departments);
         menuComboBox.setBounds(200, 50, 150, 30);
-        createButton.setBounds(20, 120, 100, 25);
-        deleteButton.setBounds(420, 120, 100, 25);
-        readByIdButton.setBounds(220, 120, 100, 25);
-        backButton.setBounds(220, 535, 100, 25);
+        createButton.setBounds(20, 130, 100, 25);
+        deleteButton.setBounds(420, 130, 100, 25);
+        readByIdButton.setBounds(220, 130, 100, 25);
+        backButton.setBounds(220, 545, 100, 25);
 
-        readLabel.setBounds(200, 170, 200, 25);
+        readLabel.setBounds(200, 180, 200, 25);
 
         createButton.setForeground(Color.BLACK);
         createButton.setBackground(Color.white);
@@ -48,19 +49,19 @@ public class adminMain extends JFrame implements ActionListener {
 
         backButton.setForeground(Color.WHITE);
         backButton.setBackground(Color.RED);
-        backButton.addActionListener(new adminMain());
 
         JTextArea textArea = new JTextArea();
         JScrollPane sp = new JScrollPane();
-        sp.setBounds(60, 200, 430, 320);
+        sp.setBounds(60, 220, 430, 320);
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         sp.getViewport().setBackground(Color.WHITE);
         sp.getViewport().add(textArea);
 
         textArea.setEditable(false);
-        textArea.setBounds(60, 200, 430, 320);
+        textArea.setText("==================== Please Select an Entity ====================");
+        textArea.setBounds(60, 220, 430, 320);
 
-        frame.setSize(560, 610);
+        frame.setSize(560, 620);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setResizable(false);
@@ -85,6 +86,12 @@ public class adminMain extends JFrame implements ActionListener {
         frame.add(deleteButton);
         frame.add(backButton);
 
+        backButton.addActionListener(ae ->{
+            frame.setVisible(false);
+            frame.dispose();
+            Login login = new Login();
+            login.setGUI();
+        });
         menuComboBox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 String comboSelect = Objects.requireNonNull(menuComboBox.getSelectedItem().toString());
@@ -93,7 +100,8 @@ public class adminMain extends JFrame implements ActionListener {
                         textArea.setText(" ");
                         textArea.setText("==================== Please Select an Entity ====================");
                     break;
-                    case "Nurse"://Nurse
+                    case "Nurse":
+                        entity = "nurse";
                         try {
                             textArea.setText(Client.getAllNurses());
                         } catch (IOException ex) {
@@ -101,32 +109,50 @@ public class adminMain extends JFrame implements ActionListener {
                         }
                         createButton.addActionListener(new ActionListener() {
                             @Override
-                            public void actionPerformed(ActionEvent ae)
-                            {
+                            public void actionPerformed(ActionEvent ae) {
                                 String id = StringHelper.generateUnqiueID();
                                 String fname = JOptionPane.showInputDialog("Please enter the nurse's first name");
                                 String lname = JOptionPane.showInputDialog("Please enter the nurse's last name");
 
-                                try
-                                {
+                                try {
                                     Client.postNurse(id, fname, lname);
                                     JOptionPane.showMessageDialog(null, "Nurse entered successfully");
-                                }
-                                catch(Exception e)
-                                {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
                         });
                         readByIdButton.addActionListener(ae -> {
                             String nurseGetId = JOptionPane.showInputDialog("Please enter the ID of the nurse you're looking for.");
+                            try {
+                                if(nurseGetId != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, nurseGetId);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String nurseDeleteId = JOptionPane.showInputDialog("Please enter the ID of the nurse you would like to delete.");
+                            String nurseDeleteId = JOptionPane.showInputDialog(frame, "Please enter the ID of the nurse you would like to delete.");
+                            try {
+                                HttpConnect.connectionDELETE(entity, nurseDeleteId);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getAllNurses());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
                     case "Cleaning Staff":
+                        entity = "cleaningStaff";
                         try {
                             textArea.setText(Client.getAllCleaningStaff());
                         } catch (IOException ex) {
@@ -138,14 +164,35 @@ public class adminMain extends JFrame implements ActionListener {
                         });
                         readByIdButton.addActionListener(ae -> {
                             String cleanStaffGetId = JOptionPane.showInputDialog("Please enter the ID of the cleaning staff member you're looking for.");
+                            try {
+                                if(cleanStaffGetId != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, cleanStaffGetId);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String cleanStaffDeleteId = JOptionPane.showInputDialog("Please enter the ID of the staff member you would like to delete.");
-                            String entity = "cleaningStaff";
+                            String cleanStaffDeleteId = JOptionPane.showInputDialog(frame,"Please enter the ID of the staff member you would like to delete.");
+                            try {
+                                HttpConnect.connectionDELETE(entity, cleanStaffDeleteId);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getAllCleaningStaff());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
                     case "Room":
+                        entity = "hospitalroom";
                         try {
                             textArea.setText(Client.getAllHospitalRooms());
                         } catch (IOException ex) {
@@ -156,9 +203,29 @@ public class adminMain extends JFrame implements ActionListener {
                         });
                         readByIdButton.addActionListener(ae -> {
                             String roomFloorGetId = JOptionPane.showInputDialog("Please enter the ID of the room you're looking for.");
+                            try {
+                                if(roomFloorGetId != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, roomFloorGetId);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String roomFloorDeleteId = JOptionPane.showInputDialog("Please enter the ID of the room you would like to delete.");
+                            String roomFloorDeleteId = JOptionPane.showInputDialog(frame,"Please enter the ID of the room you would like to delete.");
+                            try {
+                                HttpConnect.connectionDELETE(entity, roomFloorDeleteId);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getAllHospitalRooms());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
@@ -178,11 +245,25 @@ public class adminMain extends JFrame implements ActionListener {
                             String patientIdRead = JOptionPane.showInputDialog("Please enter the ID of the patient you're looking for.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String patientIdDelete = JOptionPane.showInputDialog("Please enter the ID of the patient you would like to delete.");
+                            String patientIdDelete = JOptionPane.showInputDialog(frame,"Please enter the ID of the patient you would like to delete.");
+                            entity = "patient";
+                            try {
+                                HttpConnect.connectionDELETE(entity, patientIdDelete);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getPatients());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
                     case "Medical Aid":
+                        entity = "medicalaid";
                         try {
                             textArea.setText(Client.getMedicalAids());
                         } catch (IOException ex) {
@@ -194,13 +275,35 @@ public class adminMain extends JFrame implements ActionListener {
                         });
                         readByIdButton.addActionListener(ae -> {
                             String medicalAidIdRead = JOptionPane.showInputDialog("Please enter the ID of the medical aid you're looking for.");
+                            try {
+                                if(medicalAidIdRead != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, medicalAidIdRead);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String medicalAidIdDelete = JOptionPane.showInputDialog("Please enter the ID of the medical aid you would like to delete.");
+                            String medicalAidIdDelete = JOptionPane.showInputDialog(frame,"Please enter the ID of the medical aid you would like to delete.");
+
+                            try {
+                                HttpConnect.connectionDELETE(entity, medicalAidIdDelete);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getMedicalAids());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
                     case "Doctor":
+                        entity = "doctor";
                         try {
                             textArea.setText(Client.getDoctors());
                         } catch (IOException ex) {
@@ -224,13 +327,34 @@ public class adminMain extends JFrame implements ActionListener {
                         });
                         readByIdButton.addActionListener(ae -> {
                             String doctorIdRead = JOptionPane.showInputDialog("Please enter the ID of the doctor you're looking for.");
+                            try {
+                                if(doctorIdRead != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, doctorIdRead);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String doctorIdDelete = JOptionPane.showInputDialog("Please enter the ID of the doctor you would like to delete.");
+                            String doctorIdDelete = JOptionPane.showInputDialog(frame,"Please enter the ID of the doctor you would like to delete.");
+                            try {
+                                HttpConnect.connectionDELETE(entity, doctorIdDelete);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getDoctors());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
                     case "Appointment":
+                        entity = "appointment";
                         try {
                             textArea.setText(Client.getAllAppointments());
                         } catch (IOException ex) {
@@ -243,31 +367,84 @@ public class adminMain extends JFrame implements ActionListener {
                         });
                         readByIdButton.addActionListener(ae -> {
                             String appointmentIdRead = JOptionPane.showInputDialog("Please enter the id of the appointment.");
+                            try {
+                                if(appointmentIdRead != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, appointmentIdRead);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String appointmentIdDelete = JOptionPane.showInputDialog("Please enter the id of the appointment.");
+                            String appointmentIdDelete = JOptionPane.showInputDialog(frame,"Please enter the id of the appointment.");
+                            try {
+                                HttpConnect.connectionDELETE(entity, appointmentIdDelete);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getAllAppointments());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
                     case "Secretary":
+                        entity = "secretary";
                         try {
                             textArea.setText(Client.getSecretaries());
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
+                            String id = StringHelper.generateUnqiueID();
                             String secretaryFname = JOptionPane.showInputDialog("Please enter the secretary's first name.");
                             String secretaryLname = JOptionPane.showInputDialog("Please enter the secretary's last name.");
+                            try
+                            {
+                                //Client.postDoctor(id, doctorFname, doctorLname, doctorCell);
+                                JOptionPane.showMessageDialog(null, "Secretary entered successfully");
+                            }
+                            catch(Exception exception)
+                            {
+                                exception.printStackTrace();
+                            }
                         });
                         readByIdButton.addActionListener(ae -> {
                             String secretaryIdRead = JOptionPane.showInputDialog("Please enter the id of the secretary you're looking for.");
+                            try {
+                                if(secretaryIdRead != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, secretaryIdRead);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String secretaryIdDelete = JOptionPane.showInputDialog("Please enter the id of the secretary you would like to delete.");
+                            String secretaryIdDelete = JOptionPane.showInputDialog(frame,"Please enter the id of the secretary you would like to delete.");
+
+                            try {
+                                HttpConnect.connectionDELETE(entity, secretaryIdDelete);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getSecretaries());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
                     case "Invoice":
+                        entity = "invoice";
                         try {
                             textArea.setText(Client.getInvoices());
                         } catch (IOException ex) {
@@ -280,13 +457,34 @@ public class adminMain extends JFrame implements ActionListener {
                         });
                         readByIdButton.addActionListener(ae -> {
                             String invoiceNumRead = JOptionPane.showInputDialog("Please enter the invoice number.");
+                            try {
+                                if(invoiceNumRead != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, invoiceNumRead);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String invoiceNumDelete = JOptionPane.showInputDialog("Please enter the invoice number you would like to delete.");
+                            String invoiceNumDelete = JOptionPane.showInputDialog(frame,"Please enter the invoice number you would like to delete.");
+                            try {
+                                HttpConnect.connectionDELETE(entity, invoiceNumDelete);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getInvoices());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
                     case "Medicine":
+                        entity = "medicine";
                         try {
                             textArea.setText(Client.getMedicines());
                         } catch (IOException ex) {
@@ -298,13 +496,35 @@ public class adminMain extends JFrame implements ActionListener {
                         });
                         readByIdButton.addActionListener(ae -> {
                             String medicineNumRead = JOptionPane.showInputDialog("Please enter the ID of the medicine you would like to find.");
+                            try {
+                                if(medicineNumRead != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, medicineNumRead);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String medicineNumDelete = JOptionPane.showInputDialog("Please enter the medicine ID you would like to delete.");
+                            String medicineNumDelete = JOptionPane.showInputDialog(frame,"Please enter the medicine ID you would like to delete.");
+
+                            try {
+                                HttpConnect.connectionDELETE(entity, medicineNumDelete);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getMedicines());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
                     case "Driver":
+                        entity = "driver";
                         try {
                             textArea.setText(Client.getAllDrivers());
                         } catch (IOException ex) {
@@ -317,13 +537,34 @@ public class adminMain extends JFrame implements ActionListener {
                         });
                         readByIdButton.addActionListener(ae -> {
                             String driverIDRead = JOptionPane.showInputDialog("Please enter the ID of the driver.");
+                            try {
+                                if(driverIDRead != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, driverIDRead);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String driverIDDelete = JOptionPane.showInputDialog("Please enter the ID of the driver you would like to delete.");
+                            String driverIDDelete = JOptionPane.showInputDialog(frame,"Please enter the ID of the driver you would like to delete.");
+                            try {
+                                HttpConnect.connectionDELETE(entity, driverIDDelete);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getAllDrivers());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
 
                     case "Supplier":
+                        entity = "supplier";
                         try {
                             textArea.setText(Client.getSuppliers());
                         } catch (IOException ex) {
@@ -335,9 +576,29 @@ public class adminMain extends JFrame implements ActionListener {
                         });
                         readByIdButton.addActionListener(ae -> {
                             String supplierIdRead = JOptionPane.showInputDialog("Please enter the ID of the supplier.");
+                            try {
+                                if(supplierIdRead != null) {
+                                    String prettyString = HttpConnect.connectionREAD(entity, supplierIdRead);
+                                    textArea.setText(prettyString);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         deleteButton.addActionListener(ae -> {
-                            String supplierIdDelete = JOptionPane.showInputDialog("Please enter the ID of the supplier you would like to delete.");
+                            String supplierIdDelete = JOptionPane.showInputDialog(frame,"Please enter the ID of the supplier you would like to delete.");
+                            try {
+                                HttpConnect.connectionDELETE(entity, supplierIdDelete);
+                                textArea.setText(" ");
+                                //Set the text area again
+                                try {
+                                    textArea.setText(Client.getSuppliers());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         });
                         break;
                 }
@@ -346,11 +607,4 @@ public class adminMain extends JFrame implements ActionListener {
         frame.setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        frame.setVisible(false);
-        frame.dispose();
-        Login login = new Login();
-        login.setGUI();
-    }
 }

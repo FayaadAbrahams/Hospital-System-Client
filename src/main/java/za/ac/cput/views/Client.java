@@ -26,6 +26,9 @@ public class Client {
     private static InputStream content = null;
     private static OutputStream contentOut = null;
     private static BufferedReader in = null;
+    //private static String prettyString;
+    //private static InputStream content;
+    //private static BufferedReader in;
     private static String line;
 
     //Opens the Connection to the URL we need to get our information from
@@ -58,6 +61,8 @@ public class Client {
         }
         return prettyString;
     }
+
+
 //================================================================================================================================================
 // Entity Methods
 
