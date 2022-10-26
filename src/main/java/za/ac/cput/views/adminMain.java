@@ -18,10 +18,10 @@ public class adminMain extends JFrame implements ActionListener {
 
     JButton createButton = new JButton("Create");
     JButton deleteButton = new JButton("Delete");
-    JButton readAllButton = new JButton("Read all");
     JButton readByIdButton = new JButton("Read by ID");
     JButton backButton = new JButton("Back");
 
+    JLabel readLabel = new JLabel("Entities on Database");
     JLabel adminLabel = new JLabel("Admin Control");
 
     public void showGUI() {
@@ -32,8 +32,9 @@ public class adminMain extends JFrame implements ActionListener {
         createButton.setBounds(20, 120, 100, 25);
         deleteButton.setBounds(420, 120, 100, 25);
         readByIdButton.setBounds(220, 120, 100, 25);
-        readAllButton.setBounds(220, 160, 100, 25);
         backButton.setBounds(220, 535, 100, 25);
+
+        readLabel.setBounds(200, 170, 200, 25);
 
         createButton.setForeground(Color.BLACK);
         createButton.setBackground(Color.white);
@@ -43,9 +44,6 @@ public class adminMain extends JFrame implements ActionListener {
 
         readByIdButton.setForeground(Color.BLACK);
         readByIdButton.setBackground(Color.white);
-
-        readAllButton.setForeground(Color.BLACK);
-        readAllButton.setBackground(Color.white);
 
         backButton.setForeground(Color.WHITE);
         backButton.setBackground(Color.RED);
@@ -73,11 +71,15 @@ public class adminMain extends JFrame implements ActionListener {
         adminLabel.setFont(new Font("Arial", Font.BOLD, 20));
         adminLabel.setBounds(210, 10, 150, 25);
 
+        readLabel.setForeground(Color.WHITE);
+        readLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+
         frame.add(adminLabel);
         frame.add(sp);
         frame.add(menuComboBox);
         frame.add(createButton);
-        frame.add(readAllButton);
+        frame.add(readLabel);
         frame.add(readByIdButton);
         frame.add(deleteButton);
         frame.add(backButton);
@@ -108,16 +110,16 @@ public class adminMain extends JFrame implements ActionListener {
 
                             @Override
                             public void actionPerformed(ActionEvent ae) {
-                                String id = "";
-                                String fname = JOptionPane.showInputDialog("Please enter the nurse's first name");
-                                String lname = JOptionPane.showInputDialog("Please enter the nurse's last name");
+                                String nurseId = "";
+                                String nurseFname = JOptionPane.showInputDialog("Please enter the nurse's first name");
+                                String nurseLname = JOptionPane.showInputDialog("Please enter the nurse's last name");
 
 //                        String json = "{"+"nurseID"+":"+"'"+id+"'"+","
 //                            +"nurseFirstName"+":"+"'"+fname+"'"+","
 //                            +"nurseLastName"+":"+"'"+lname+"'"+"}";
 //                        System.out.println(json);
 
-                                JSONObject sendObj = prepJson(id, fname, lname);
+                                JSONObject sendObj = prepJson(nurseId, nurseFname, nurseLname);
                                 String reqString = sendObj.toString();
                                 String url = "http://localhost:8080/hospital system/nurse";
 
@@ -125,10 +127,10 @@ public class adminMain extends JFrame implements ActionListener {
                             }
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String nurseGetId = JOptionPane.showInputDialog("Please enter the id of the nurse you're looking for.");
+                            String nurseGetId = JOptionPane.showInputDialog("Please enter the ID of the nurse you're looking for.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String nurseDeleteId = JOptionPane.showInputDialog("Please enter the id of the nurse you would like to delete.");
+                            String nurseDeleteId = JOptionPane.showInputDialog("Please enter the ID of the nurse you would like to delete.");
                         });
                     }
                     case "Cleaning Staff" -> {
@@ -138,14 +140,14 @@ public class adminMain extends JFrame implements ActionListener {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
-                            String fname = JOptionPane.showInputDialog("Please enter the staff member's first name");
-                            String lname = JOptionPane.showInputDialog("Please enter the staff member's last name");
+                            String cleanStaffFname = JOptionPane.showInputDialog("Please enter the staff member's first name");
+                            String cleanStaffLname = JOptionPane.showInputDialog("Please enter the staff member's last name");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String staffGetId = JOptionPane.showInputDialog("Please enter the id of the cleaning staff member you're looking for.");
+                            String cleanStaffGetId = JOptionPane.showInputDialog("Please enter the ID of the cleaning staff member you're looking for.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String staffDeleteId = JOptionPane.showInputDialog("Please enter the id of the staff member you would like to delete.");
+                            String cleanStaffDeleteId = JOptionPane.showInputDialog("Please enter the ID of the staff member you would like to delete.");
                         });
                     }
                     case "Room" -> {
@@ -158,10 +160,10 @@ public class adminMain extends JFrame implements ActionListener {
                             String roomFloor = JOptionPane.showInputDialog("Please enter the room floor");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String roomFloorGetId = JOptionPane.showInputDialog("Please enter the id of the room you're looking for.");
+                            String roomFloorGetId = JOptionPane.showInputDialog("Please enter the ID of the room you're looking for.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String roomFloorDeleteId = JOptionPane.showInputDialog("Please enter the id of the room you would like to delete.");
+                            String roomFloorDeleteId = JOptionPane.showInputDialog("Please enter the ID of the room you would like to delete.");
                         });
                     }
                     case "Patient" -> {
@@ -171,16 +173,16 @@ public class adminMain extends JFrame implements ActionListener {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
-                            String fname = JOptionPane.showInputDialog("Please enter the patient's first name.");
-                            String lname = JOptionPane.showInputDialog("Please enter the patient's last name.");
-                            String address = JOptionPane.showInputDialog("Please enter the patient's address.");
-                            String cell = JOptionPane.showInputDialog("Please enter the patient's cell number,");
+                            String patientFname = JOptionPane.showInputDialog("Please enter the patient's first name.");
+                            String patientLname = JOptionPane.showInputDialog("Please enter the patient's last name.");
+                            String patientAddress = JOptionPane.showInputDialog("Please enter the patient's address.");
+                            String patientCell = JOptionPane.showInputDialog("Please enter the patient's cell number,");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String patientId = JOptionPane.showInputDialog("Please enter the id of the patient you're looking for.");
+                            String patientIdRead = JOptionPane.showInputDialog("Please enter the ID of the patient you're looking for.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String patientId = JOptionPane.showInputDialog("Please enter the id of the patient you would like to delete.");
+                            String patientIdDelete = JOptionPane.showInputDialog("Please enter the ID of the patient you would like to delete.");
                         });
                     }
                     case "Medical Aid" -> {
@@ -190,14 +192,14 @@ public class adminMain extends JFrame implements ActionListener {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
-                            String name = JOptionPane.showInputDialog("Please enter the medical aid name.");
-                            String address = JOptionPane.showInputDialog("Please enter the medical aid address.");
+                            String medicalAidName = JOptionPane.showInputDialog("Please enter the medical aid name.");
+                            String medicalAidAddress = JOptionPane.showInputDialog("Please enter the medical aid address.");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String medicalAidId = JOptionPane.showInputDialog("Please enter the id of the medical aid you're looking for.");
+                            String medicalAidIdRead = JOptionPane.showInputDialog("Please enter the ID of the medical aid you're looking for.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String medicalAidId = JOptionPane.showInputDialog("Please enter the id of the medical aid you would like to delete.");
+                            String medicalAidIdDelete = JOptionPane.showInputDialog("Please enter the ID of the medical aid you would like to delete.");
                         });
                     }
                     case "Doctor" -> {
@@ -207,15 +209,15 @@ public class adminMain extends JFrame implements ActionListener {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
-                            String fname = JOptionPane.showInputDialog("Please enter the doctor's first name.");
-                            String lname = JOptionPane.showInputDialog("Please enter the doctor's last name.");
-                            String cell = JOptionPane.showInputDialog("Please enter the doctor's cell number,");
+                            String doctorFname = JOptionPane.showInputDialog("Please enter the doctor's first name.");
+                            String doctorLname = JOptionPane.showInputDialog("Please enter the doctor's last name.");
+                            String doctorCell = JOptionPane.showInputDialog("Please enter the doctor's cell number,");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String doctorId = JOptionPane.showInputDialog("Please enter the id of the doctor you're looking for.");
+                            String doctorIdRead = JOptionPane.showInputDialog("Please enter the ID of the doctor you're looking for.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String doctorId = JOptionPane.showInputDialog("Please enter the id of the doctor you would like to delete.");
+                            String doctorIdDelete = JOptionPane.showInputDialog("Please enter the ID of the doctor you would like to delete.");
                         });
                     }
                     case "Appointment" -> {
@@ -225,15 +227,15 @@ public class adminMain extends JFrame implements ActionListener {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
-                            String time = JOptionPane.showInputDialog("Please enter the time of the appointment.");
-                            String duration = JOptionPane.showInputDialog("Please enter the appointment duration.");
-                            String date = JOptionPane.showInputDialog("Please enter the appointment date.");
+                            String appointmentTime = JOptionPane.showInputDialog("Please enter the time of the appointment.");
+                            String appointmentDuration = JOptionPane.showInputDialog("Please enter the appointment duration.");
+                            String appointmentDate = JOptionPane.showInputDialog("Please enter the appointment date.");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String appointmentId = JOptionPane.showInputDialog("Please enter the id of the appointment.");
+                            String appointmentIdRead = JOptionPane.showInputDialog("Please enter the id of the appointment.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String appointmentId = JOptionPane.showInputDialog("Please enter the id of the appointment.");
+                            String appointmentIdDelete = JOptionPane.showInputDialog("Please enter the id of the appointment.");
                         });
                     }
                     case "Secretary" -> {
@@ -243,14 +245,14 @@ public class adminMain extends JFrame implements ActionListener {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
-                            String fname = JOptionPane.showInputDialog("Please enter the secretary's first name.");
-                            String lname = JOptionPane.showInputDialog("Please enter the secretary's last name.");
+                            String secretaryFname = JOptionPane.showInputDialog("Please enter the secretary's first name.");
+                            String secretaryLname = JOptionPane.showInputDialog("Please enter the secretary's last name.");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String secretaryId = JOptionPane.showInputDialog("Please enter the id of the secretary you're looking for.");
+                            String secretaryIdRead = JOptionPane.showInputDialog("Please enter the id of the secretary you're looking for.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String secretaryId = JOptionPane.showInputDialog("Please enter the id of the secretary you would like to delete.");
+                            String secretaryIdDelete = JOptionPane.showInputDialog("Please enter the id of the secretary you would like to delete.");
                         });
                     }
                     case "Invoice" -> {
@@ -260,15 +262,15 @@ public class adminMain extends JFrame implements ActionListener {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
-                            String type = JOptionPane.showInputDialog("Please enter the invoice type.");
-                            String date = JOptionPane.showInputDialog("Please enter the invoice date.");
-                            String amount = JOptionPane.showInputDialog("Please enter the invoice amount.");
+                            String invoiceType = JOptionPane.showInputDialog("Please enter the invoice type.");
+                            String invoiceDate = JOptionPane.showInputDialog("Please enter the invoice date.");
+                            String invoiceAmount = JOptionPane.showInputDialog("Please enter the invoice amount.");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String invoiceNum = JOptionPane.showInputDialog("Please enter the invoice number.");
+                            String invoiceNumRead = JOptionPane.showInputDialog("Please enter the invoice number.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String invoiceNum = JOptionPane.showInputDialog("Please enter the invoice number you would like to delete.");
+                            String invoiceNumDelete = JOptionPane.showInputDialog("Please enter the invoice number you would like to delete.");
                         });
                     }
                     case "Medicine" -> {
@@ -278,14 +280,14 @@ public class adminMain extends JFrame implements ActionListener {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
-                            String amount = JOptionPane.showInputDialog("Please enter the amount for this medicine.");
-                            String type = JOptionPane.showInputDialog("What type of medicine is this?.");
+                            String medicineAmount = JOptionPane.showInputDialog("Please enter the amount for this medicine.");
+                            String medicineType = JOptionPane.showInputDialog("What type of medicine is this?.");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String medicineId = JOptionPane.showInputDialog("Please enter the ID of the medicine you would like to find.");
+                            String medicineNumRead = JOptionPane.showInputDialog("Please enter the ID of the medicine you would like to find.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String medicineNum = JOptionPane.showInputDialog("Please enter the medicine ID you would like to delete.");
+                            String medicineNumDelete = JOptionPane.showInputDialog("Please enter the medicine ID you would like to delete.");
                         });
                     }
                     case "Driver" -> {
@@ -295,15 +297,15 @@ public class adminMain extends JFrame implements ActionListener {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
-                            String fname = JOptionPane.showInputDialog("Please enter the driver's first name.");
-                            String lname = JOptionPane.showInputDialog("Please enter the driver's last name.");
-                            String licenseNum = JOptionPane.showInputDialog("Please enter the license number.");
+                            String driverFname = JOptionPane.showInputDialog("Please enter the driver's first name.");
+                            String driverLname = JOptionPane.showInputDialog("Please enter the driver's last name.");
+                            String driverlicenseNum = JOptionPane.showInputDialog("Please enter the license number.");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String driverID = JOptionPane.showInputDialog("Please enter the ID of the driver.");
+                            String driverIDRead = JOptionPane.showInputDialog("Please enter the ID of the driver.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String driverID = JOptionPane.showInputDialog("Please enter the ID of the driver you would like to delete.");
+                            String driverIDDelete = JOptionPane.showInputDialog("Please enter the ID of the driver you would like to delete.");
                         });
                     }
                     case "Supplier" -> {
@@ -313,14 +315,14 @@ public class adminMain extends JFrame implements ActionListener {
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
-                            String address = JOptionPane.showInputDialog("Please enter the supplier's address.");
-                            String regNum = JOptionPane.showInputDialog("Please enter the supplier's registration number.");
+                            String supplierAddress = JOptionPane.showInputDialog("Please enter the supplier's address.");
+                            String supplierRegNum = JOptionPane.showInputDialog("Please enter the supplier's registration number.");
                         });
                         readByIdButton.addActionListener(ae -> {
-                            String supplier = JOptionPane.showInputDialog("Please enter the ID of the supplier.");
+                            String supplierIdRead = JOptionPane.showInputDialog("Please enter the ID of the supplier.");
                         });
                         deleteButton.addActionListener(ae -> {
-                            String supplierID = JOptionPane.showInputDialog("Please enter the ID of the supplier you would like to delete.");
+                            String supplierIdDelete = JOptionPane.showInputDialog("Please enter the ID of the supplier you would like to delete.");
                         });
                     }
                 }
