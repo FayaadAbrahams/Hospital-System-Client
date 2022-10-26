@@ -61,6 +61,7 @@ public class Client {
         System.out.println(getPrettyString(line));
         //Returns the final readable JSON Array
         return getPrettyString(line);
+
     }
 
     // Fetch all items from Appointments and Return in a String
