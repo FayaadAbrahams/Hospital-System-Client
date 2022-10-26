@@ -24,8 +24,6 @@ public class Login implements ActionListener {
     private static Font f2;
 
 
-    private static User user;
-
     public static void main(String[] args) {
         new Login().setGUI();
     }
