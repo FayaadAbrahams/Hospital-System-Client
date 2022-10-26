@@ -1,15 +1,25 @@
 package za.ac.cput.views;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Scanner;
 
 public class HttpConnect {
-    private static InputStream content = null;
-    private static BufferedReader in = null;
-    private static String line;
+
+    private static InputStream inputStream = null;
+    private static BufferedReader bufferedReader = null;
+    private static String result;
     private static final String ENCODING = Base64.getEncoder().encodeToString(("admin-user:65ff7492d30").getBytes(StandardCharsets.UTF_8));
     public static String post(String urlDest, String urlParam)
     {
@@ -83,11 +93,46 @@ public class HttpConnect {
         //Specify what kind of authentication + adding encoding
         connection.setRequestProperty("Authorization", "Basic " + ENCODING);
         connection.connect();
-        content = connection.getInputStream();
-        in = new BufferedReader(new InputStreamReader(content));
+
+        inputStream = connection.getInputStream();
+        bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String finalString = Client.getPrettyString(result);
         System.out.println("Reading ID: " + readID);
-        System.out.println("CONNECTION READ METHOD");
-        return Client.getPrettyString(line);
+        System.out.println(finalString);
+        return finalString;
     }*/
 
+    public static String connectionREAD(String entity, String readID) throws IOException {
+        String json = null;
+        try {
+            String urlDest = "http://localhost:8080/hospital-system/" + entity + "/read/" + readID;
+            URL url = new URL(urlDest);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setDoOutput(true);
+            //Specify what kind of authentication + adding encoding
+            connection.setRequestProperty("Authorization", "Basic " + ENCODING);
+            connection.connect();
+
+            InputStream inStream = connection.getInputStream();
+            json = streamToString(inStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+    private static String streamToString(InputStream inputStream) {
+        String text = new Scanner(inputStream, "UTF-8").useDelimiter("\\Z").next();
+        String indented = (new JSONObject(text).toString(4));
+        return indented;
+    }
+
+ /*   public static void main(String[] args) {
+        try {
+            //connectionREAD("nurse","12");
+            System.out.println(connectionREAD("nurse","12"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
 }
