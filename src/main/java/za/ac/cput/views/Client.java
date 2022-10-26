@@ -21,6 +21,7 @@ public class Client {
 
     // String used to encode username and password to access secured content on URL.
     private static final String ENCODING = Base64.getEncoder().encodeToString(("client-user:1253208465b").getBytes(StandardCharsets.UTF_8));
+<<<<<<< HEAD
     private static final String ENCODING2 = Base64.getEncoder().encodeToString(("admin-user:65ff7492d30").getBytes(StandardCharsets.UTF_8));
     private static String prettyString = null;
     private static InputStream content = null;
@@ -29,6 +30,11 @@ public class Client {
     //private static String prettyString;
     //private static InputStream content;
     //private static BufferedReader in;
+=======
+    private static String prettyString;
+    private static InputStream content;
+    private static BufferedReader in;
+>>>>>>> 0105144f39923b5ef6527f62e10c7a4914d8b7c7
     private static String line;
 
     //Opens the Connection to the URL we need to get our information from

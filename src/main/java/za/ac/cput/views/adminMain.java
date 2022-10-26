@@ -99,7 +99,12 @@ public class adminMain extends JFrame{
                     case " ":
                         textArea.setText(" ");
                         textArea.setText("==================== Please Select an Entity ====================");
+<<<<<<< HEAD
                     break;
+=======
+                        break;
+
+>>>>>>> 0105144f39923b5ef6527f62e10c7a4914d8b7c7
                     case "Nurse":
                         entity = "nurse";
                         try {
@@ -110,6 +115,7 @@ public class adminMain extends JFrame{
                         createButton.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent ae) {
+<<<<<<< HEAD
                                 String id = StringHelper.generateUnqiueID();
                                 String fname = JOptionPane.showInputDialog("Please enter the nurse's first name");
                                 String lname = JOptionPane.showInputDialog("Please enter the nurse's last name");
@@ -120,6 +126,11 @@ public class adminMain extends JFrame{
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
+=======
+                                String nurseId = "";
+                                String nurseFname = JOptionPane.showInputDialog("Please enter the nurse's first name");
+                                String nurseLname = JOptionPane.showInputDialog("Please enter the nurse's last name");
+>>>>>>> 0105144f39923b5ef6527f62e10c7a4914d8b7c7
                             }
                         });
                         readByIdButton.addActionListener(ae -> {
@@ -482,7 +493,10 @@ public class adminMain extends JFrame{
                             }
                         });
                         break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0105144f39923b5ef6527f62e10c7a4914d8b7c7
                     case "Medicine":
                         entity = "medicine";
                         try {
@@ -601,6 +615,11 @@ public class adminMain extends JFrame{
                             }
                         });
                         break;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 0105144f39923b5ef6527f62e10c7a4914d8b7c7
                 }
             }
         });
