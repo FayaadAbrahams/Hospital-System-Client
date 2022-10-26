@@ -30,10 +30,10 @@ public class User extends JFrame implements ActionListener {
         userPanel.setLayout(null);
         userPanel.setBackground(Color.black);
 
-        entityLabel = new JLabel("Entities");
+        entityLabel = new JLabel("User Control");
         entityLabel.setForeground(Color.WHITE);
         entityLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        entityLabel.setBounds(180, 20, 80, 25);
+        entityLabel.setBounds(150, 20, 120, 25);
 
         comboBox = new JComboBox<>(entities);
         comboBox.setBounds(150, 50, 130, 25);
@@ -147,7 +147,7 @@ public class User extends JFrame implements ActionListener {
         backButton = new JButton("Back");
         backButton.setForeground(Color.WHITE);
         backButton.setBackground(Color.RED);
-        backButton.setBounds(170, 530, 80, 25);
+        backButton.setBounds(170, 540, 80, 25);
         backButton.addActionListener(new User());
 
         userPanel.add(entityLabel);
