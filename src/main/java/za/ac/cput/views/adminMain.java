@@ -1,6 +1,7 @@
 package za.ac.cput.views;
 
 import org.json.JSONObject;
+import za.ac.cput.util.StringHelper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -98,8 +99,12 @@ public class adminMain extends JFrame{
                     case " ":
                         textArea.setText(" ");
                         textArea.setText("==================== Please Select an Entity ====================");
+<<<<<<< HEAD
+                    break;
+=======
                         break;
 
+>>>>>>> 0105144f39923b5ef6527f62e10c7a4914d8b7c7
                     case "Nurse":
                         entity = "nurse";
                         try {
@@ -108,20 +113,24 @@ public class adminMain extends JFrame{
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(new ActionListener() {
-
-                            public JSONObject prepJson(String str1, String str2, String str3) {
-                                JSONObject jObject = new JSONObject();
-                                jObject.put("nurseID", str1);
-                                jObject.put("nurseFirstName", str2);
-                                jObject.put("nurseLastName", str3);
-                                return jObject;
-                            }
-
                             @Override
                             public void actionPerformed(ActionEvent ae) {
+<<<<<<< HEAD
+                                String id = StringHelper.generateUnqiueID();
+                                String fname = JOptionPane.showInputDialog("Please enter the nurse's first name");
+                                String lname = JOptionPane.showInputDialog("Please enter the nurse's last name");
+
+                                try {
+                                    Client.postNurse(id, fname, lname);
+                                    JOptionPane.showMessageDialog(null, "Nurse entered successfully");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+=======
                                 String nurseId = "";
                                 String nurseFname = JOptionPane.showInputDialog("Please enter the nurse's first name");
                                 String nurseLname = JOptionPane.showInputDialog("Please enter the nurse's last name");
+>>>>>>> 0105144f39923b5ef6527f62e10c7a4914d8b7c7
                             }
                         });
                         readByIdButton.addActionListener(ae -> {
@@ -312,9 +321,20 @@ public class adminMain extends JFrame{
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
+                            String id = StringHelper.generateUnqiueID();
                             String doctorFname = JOptionPane.showInputDialog("Please enter the doctor's first name.");
                             String doctorLname = JOptionPane.showInputDialog("Please enter the doctor's last name.");
                             String doctorCell = JOptionPane.showInputDialog("Please enter the doctor's cell number,");
+
+                            try
+                            {
+                                Client.postDoctor(id, doctorFname, doctorLname, doctorCell);
+                                JOptionPane.showMessageDialog(null, "Doctor entered successfully");
+                            }
+                            catch(Exception exception)
+                            {
+                                exception.printStackTrace();
+                            }
                         });
                         readByIdButton.addActionListener(ae -> {
                             String doctorIdRead = JOptionPane.showInputDialog("Please enter the ID of the doctor you're looking for.");
@@ -392,8 +412,18 @@ public class adminMain extends JFrame{
                             throw new RuntimeException(ex);
                         }
                         createButton.addActionListener(ae -> {
+                            String id = StringHelper.generateUnqiueID();
                             String secretaryFname = JOptionPane.showInputDialog("Please enter the secretary's first name.");
                             String secretaryLname = JOptionPane.showInputDialog("Please enter the secretary's last name.");
+                            try
+                            {
+                                //Client.postDoctor(id, doctorFname, doctorLname, doctorCell);
+                                JOptionPane.showMessageDialog(null, "Secretary entered successfully");
+                            }
+                            catch(Exception exception)
+                            {
+                                exception.printStackTrace();
+                            }
                         });
                         readByIdButton.addActionListener(ae -> {
                             String secretaryIdRead = JOptionPane.showInputDialog("Please enter the id of the secretary you're looking for.");
@@ -463,6 +493,10 @@ public class adminMain extends JFrame{
                             }
                         });
                         break;
+<<<<<<< HEAD
+
+=======
+>>>>>>> 0105144f39923b5ef6527f62e10c7a4914d8b7c7
                     case "Medicine":
                         entity = "medicine";
                         try {
@@ -581,8 +615,11 @@ public class adminMain extends JFrame{
                             }
                         });
                         break;
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> 0105144f39923b5ef6527f62e10c7a4914d8b7c7
                 }
             }
         });
