@@ -148,6 +148,7 @@ public class adminMain extends JFrame implements ActionListener {
                         });
                         deleteButton.addActionListener(ae -> {
                             String cleanStaffDeleteId = JOptionPane.showInputDialog("Please enter the ID of the staff member you would like to delete.");
+                            String entity = "cleaningStaff";
                         });
                     }
                     case "Room" -> {
